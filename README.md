@@ -25,6 +25,7 @@ It features a visual explanation of the Query Language.
 
 ## The tech-stack
 
+The project is a monorepo created with [NX](https://nx.dev/).
 This project uses a [NestJS](https://nestjs.com/) backend and an [Angular](https://angular.io/) frontend. The database is a MongoDB database.
 
 ## Images
@@ -60,18 +61,16 @@ A more complex query might look like this:
 
 ## Getting started
 
-To run the backend, execute these commands:
+To run the backend project either use the NX commands:
 
 ```bash
-cd ./src/backend
-npm install
-docker-compose up -d
-npm run start:dev
-
+docker-compose -f docker-compose.dev.yml up
+nx run-many --target=serve --all=true
 ```
 
+Or run it with docker:
+
 ```bash
-cd ./src/frontend
-npm install
-ng serve
+docker-compose -f docker-compose.yml build
+docker-compose -f docker-compose.yml up
 ```
