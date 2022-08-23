@@ -1,0 +1,186 @@
+<div class="flex justify-center m-10">
+    <div class="w-1/2 p-5">
+        <div>
+            <h1 class="text-2xl font-bold py-4">The DOMinator Webscraper</h1>
+            <p class="text-lg pt-1">The DOMinator makes webscraping accessible to every member of your organisation, even non-technical staff</p>
+            <p class="text-lg pt-1">What is the DOM? It stands for Document-Object-Model. It's the tree like structure that makes up HTML pages. </p>
+        </div>
+        <div>
+            <h1 class="text-xl font-bold py-4">Basic Concepts</h1>
+            <p class="text-lg pt-1">
+                The DOMinator works with configurations. Users can create, modify and delete these.  
+                The configurations specify what to scrape where and when. 
+            </p>
+            <div class="text-lg pt-1">
+                A configuration is made up of three elements.  
+                <ul class="list-disc pl-5">
+                    <li>The <span class="font-bold">name</span>, which is used only for displaying that configuration to the user. </li>
+                    <li>The <span class="font-bold">URL</span>, which determines which site to scrape.</li>
+                    <li>And the <span class="font-bold">ScrapeConfig</span>, which determines what to scrape.</li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <h1 class="text-xl font-bold py-4">ScrapeConfig</h1>
+            <p class="text-lg pt-1">
+                The DOMinator uses a proprietary parsing language known as <span class="font-bold">DOMScript</span>. 
+                It makes specifying which elements you want easy and accessible.
+            </p>
+            <p class="text-lg pt-1">
+                DOMScript is made up of two main elements: <span class="font-bold">TextQueries</span> and <span class="font-bold">TableQueries</span>
+            </p>
+            <p class="text-lg pt-1">
+                Independant of the type, each query has a <span class="font-bold">name</span> and an <span class="font-bold">object_name</span>. 
+                The name is used only for displaying the query to the user, the object name however specifies the name of the property, under which the scraped data is saved.
+            </p>
+            <div class="pl-2">
+                <h1 class="text-lg font-bold pt-4">TextQueries</h1>
+                <p class="text-lg pt-1">
+                    A TextQuery allows you to select an Element using DOMScript and it will get the text content of that element and save it.
+                </p>
+            </div>
+            <div class="pl-2">
+                <h1 class="text-lg font-bold pt-4">TableQueries</h1>
+                <p class="text-lg pt-1">
+                    A TableQuery allows you to scrape table-like data and save it in an appropriate format. 
+                    A TableQuery is made up of a <span class="font-bold">TableRow</span> query 
+                    and the <span class="font-bold">TableColumn</span> queries. 
+                    The TableRow query specifies which elements contain the rows of the table. 
+                    They might be <span class="inline-block font-mono text-blue-500"><<span></span>li><<span></span>/li></span> elements or a div. 
+                    The TableColumn queries specify which elements to get from each of the TableRows.
+                </p>
+            </div>
+        </div>
+        <div>
+            <h1 class="text-xl font-bold py-4">DOMScript</h1>
+            <p class="text-lg pt-1">
+                Inside Table- or TextQueries the user can make refinements to their query with the three other queries provided by DOMSCript. 
+                These can only be used inside a Table- or TextQuery to make more precise queries possible, for more complicated DOM structures.
+            </p>
+            <div class="pl-2">
+                <h1 class="text-lg font-bold pt-4">BaseQuery</h1>
+                <div class="text-lg pt-1">
+                    This is the simplest of the three queries. It simply takes the first element that corresponds to the query.
+                    <div class="ml-6 p-4 text-slate-400 bg-white rounded-md shadow-md flex flex-col items-center">
+                        <div class="text-black w-80">
+                            DOM: 
+                            <div class="pl-4 text-slate-400">&lt;<span class="text-blue-500">div</span>&gt; 
+                                <div class="pl-6">
+                                    &lt;<span class="text-blue-500">div</span> class=<span class="text-teal-500">"girl"</span>&gt; 
+                                        <div class="pl-6">
+                                            <span class="text-black">Anna</span>
+                                        </div>
+                                    &lt;/<span class="text-blue-500">div</span>&gt;
+                                </div> 
+                                <div class="pl-6">
+                                    &lt;<span class="text-blue-500">div</span> class=<span class="text-teal-500">"boy"</span>&gt; 
+                                        <div class="pl-6">
+                                            <span class="text-black">Marcus</span>
+                                        </div>
+                                    &lt;/<span class="text-blue-500">div</span>&gt;
+                                </div> 
+                                <div class="pl-6">
+                                    &lt;<span class="text-blue-500">div</span> class=<span class="text-teal-500">"boy"</span>&gt; 
+                                        <div class="pl-6">
+                                            <span class="text-black">Alexander</span>
+                                        </div>
+                                    &lt;/<span class="text-blue-500">div</span>&gt;
+                                </div>
+                            &lt;/<span class="text-blue-500">div</span>&gt;
+                            </div>
+                        </div>
+                        
+                        <div class="pt-6 text-black w-80">
+                            Query: 
+                            <div class="pt-1 text-slate-700">
+                                TextQuery > BaseQueryAll (<span class="px-1 text-lime-600">".boy"</span>)
+                            </div>
+                        </div>
+                        <div class="pt-6 text-black w-80">
+                            Result: 
+                            <div class="pt-1 text-slate-400">
+                                <div class="pl-6">
+                                    &lt;<span class="text-blue-500">div</span> class=<span class="text-teal-500">"boy"</span>&gt; 
+                                        <div class="pl-6">
+                                            <span class="text-black">Marcus</span>
+                                        </div>
+                                    &lt;/<span class="text-blue-500">div</span>&gt;
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-6 ml-6">
+                        <p>This Query would scrape the element with Marcus in it, as it's the first that matches the query.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="pl-2">
+                <h1 class="text-lg font-bold pt-4">BaseQueryAll</h1>
+                <div class="text-lg pt-1">
+                    What if you wanted Alexander however? The BaseQueryAll makes it possible to specify that you want the first or the tenth, etc... element.
+                    <div class="ml-6 p-4 text-slate-400 bg-white rounded-md shadow-md flex flex-col items-center">
+                        <div class="text-black w-80">
+                            DOM: 
+                            <div class="pl-4 text-slate-400">&lt;<span class="text-blue-500">div</span>&gt; 
+                                <div class="pl-6">
+                                    &lt;<span class="text-blue-500">div</span> class=<span class="text-teal-500">"girl"</span>&gt; 
+                                        <div class="pl-6">
+                                            <span class="text-black">Anna</span>
+                                        </div>
+                                    &lt;/<span class="text-blue-500">div</span>&gt;
+                                </div> 
+                                <div class="pl-6">
+                                    &lt;<span class="text-blue-500">div</span> class=<span class="text-teal-500">"boy"</span>&gt; 
+                                        <div class="pl-6">
+                                            <span class="text-black">Marcus</span>
+                                        </div>
+                                    &lt;/<span class="text-blue-500">div</span>&gt;
+                                </div> 
+                                <div class="pl-6">
+                                    &lt;<span class="text-blue-500">div</span> class=<span class="text-teal-500">"boy"</span>&gt; 
+                                        <div class="pl-6">
+                                            <span class="text-black">Alexander</span>
+                                        </div>
+                                    &lt;/<span class="text-blue-500">div</span>&gt;
+                                </div>
+                            &lt;/<span class="text-blue-500">div</span>&gt;
+                            </div>
+                        </div>
+                        
+                        <div class="pt-6 text-black w-80">
+                            Query: 
+                            <div class="pt-1 text-slate-700">
+                                TextQuery > BaseQueryAll (<span class="px-1 text-lime-600">".boy"</span> <span class="px-1 text-pink-600">1</span>)
+                            </div>
+                        </div>
+                        <div class="pt-6 text-black w-80">
+                            Result: 
+                            <div class="pt-1 text-slate-400">
+                                <div class="pl-6">
+                                    &lt;<span class="text-blue-500">div</span> class=<span class="text-teal-500">"boy"</span>&gt; 
+                                        <div class="pl-6">
+                                            <span class="text-black">Alexander</span>
+                                        </div>
+                                    &lt;/<span class="text-blue-500">div</span>&gt;
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-6 ml-6">
+                        <p>This Query would scrape the element with Alexander in it, as it's the second (or first, we begin to count with 0 in the industry) element.</p>
+
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold py-4">Getting Started</h1>
+                <p class="text-lg pt-1">
+                    Go to <a class="text-blue-500" href="/config/add">/config/add</a> and create your first config. There will be an interactive guide.
+                </p>
+                <p class="text-lg pt-1">
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

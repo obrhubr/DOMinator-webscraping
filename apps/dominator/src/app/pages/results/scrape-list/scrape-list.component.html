@@ -1,0 +1,14 @@
+<div class="bg-white shadow-lg rounded-lg p-8 my-6">
+    <div class="text-xl black mb-3 flex justify-between">
+        <div>
+            <span class="underline">Scrape Job: </span>{{config.name}}
+        </div>
+        <div class="flex justify-around">
+            <a target="_blank" href="{{baseUrl + '/export/json/' + config._id}}" class="mx-5 px-2 py-1 bg-blue-500 rounded-md text-white text-lg">Export JSON</a>
+            <a target="_blank" href="{{baseUrl + '/export/csv/' + config._id}}" class="mx-5 px-2 py-1 bg-green-500 rounded-md text-white text-lg">Export CSV</a>
+        </div>
+    </div>
+    <div *ngFor="let result of results" class="mx-4 flex flex-col">
+        <app-scrape-item [result]="result"></app-scrape-item>
+    </div>
+</div>

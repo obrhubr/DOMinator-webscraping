@@ -1,0 +1,42 @@
+<div class="bg-white shadow-md rounded-md my-6 p-4">
+    <div class="flex flex-row justify-between">
+        <div class="text-gray-700">Scraped at: {{result.createdAt}}</div>
+        <a href="/config/{{result._config}}" class="text-blue-600">/{{result._config}}</a>
+    </div>
+    <div *ngIf="!collapsed">
+        <div class="my-3">
+            <div class="mt-2 underline">
+                TextQueries:
+            </div>
+            <div class="divide-y divide-slate-200 ml-8">
+                <div *ngFor="let q of getTextQueries(); let i = index">
+                    <app-text-query-result [q]="q"></app-text-query-result>
+                </div>
+            </div>
+        </div>
+        <div class="my-3">
+            <div class="my-4 underline">
+                TableQueries:
+            </div>
+            <div class="divide-y divide-slate-200 ml-8">
+                <div *ngFor="let q of getTableQueries(); let i = index">
+                    <app-table-query-result [q]="q"></app-table-query-result>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center mt-6">
+        <div class="w-10">
+            <button (click)="collapse()" *ngIf="!collapsed" type="button" class="hover:text-slate-800 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z" />
+                </svg>
+            </button>
+            <button (click)="collapse()"  *ngIf="collapsed" type="button" class="hover:text-slate-800 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>

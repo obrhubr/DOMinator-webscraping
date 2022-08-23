@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: ./backend.Dockerfile
+    environment:
+      - PORT=3000
+      - ENV=PROD
+      - MONGO_USER=user
+      - MONGO_PASSWORD=secret
+      - MONGO_DB=dominator
+      - MONGO_HOST=mongo:27017
+    ports:
+      - 3000:3000
+  frontend:
+    build: 
+      context: .
+      dockerfile: ./frontend.Dockerfile
+    environment:
+      - PORT=4200
+      - ENV=PROD
+    ports:
+      - 4200:4200
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_NON_ROOT_DATABASE=dominator
+      - MONGO_NON_ROOT_USERNAME=user
+      - MONGO_NON_ROOT_PASSWORD=secret
+    volumes:
+      - ./volumes/db:/data/db

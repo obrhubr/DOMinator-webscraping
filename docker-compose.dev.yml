@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_NON_ROOT_DATABASE=dominator
+      - MONGO_NON_ROOT_USERNAME=user
+      - MONGO_NON_ROOT_PASSWORD=secret
+    volumes:
+      - ./volumes/db:/data/db

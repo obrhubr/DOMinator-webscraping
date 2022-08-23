@@ -1,0 +1,37 @@
+<div *ngIf="!allDone" class="bg-white rounded-md shadow-md p-4">
+    <div class="mb-6 text-2xl font-bold">
+        DOMScript ScrapeConfig:
+    </div>
+    <div class="divide-y divide-slate-300">
+        <div>
+            <div class="ml-6 my-4 text-xl">
+                TextQueries: 
+            </div>
+            <div class="divide-y divide-slate-200 ml-4">
+                <div *ngFor="let q of getTextQueries(); let i = index">
+                    <app-text-query [dom]="parsedDom" [index]="i" (deleted)="deleteText($event)" qName="TextQuery Name..." qObjName="TextQuery object name (for saving data)"  [query]="q" (sendTextQuery)="setTextQuery($event)"></app-text-query>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <div class="ml-6 my-4 text-xl">
+                TableQueries: 
+            </div>
+            <div class="divide-y divide-slate-200 ml-4">
+                <div *ngFor="let q of getTableQueries(); let i = index">
+                    <app-table-query [dom]="parsedDom" [index]="i" (deleted)="deleteTable($event)" [query]="q" (sendTableQuery)="setTableQuery($event)"></app-table-query>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-6">
+        <button type="button" (click)="createNewTextQuery()" class="bg-white text-black px-4 py-2 border-slate-300 border-2 rounded-lg mr-4 hover:bg-gray-200 focus:ring-2 focus:outline-none focus:ring-gray-400">+ Add TextQuery</button>
+        <button type="button" (click)="createNewTableQuery()" class="bg-white text-black px-4 py-2 border-slate-300 border-2 rounded-lg mr-4 hover:bg-gray-200 focus:ring-2 focus:outline-none focus:ring-gray-400">+ Add TableQuery</button>
+        <button (click)="done()" type="button" class="text-white px-4 py-2 bg-green-600 border-white border-2 rounded-lg mr-4 hover:bg-green-800 focus:ring-2 focus:outline-none focus:ring-green-400">Done</button>
+    </div>
+</div>
+<div *ngIf="allDone" class="flex">
+    <div class="my-3 px-4 py-2 bg-green-600 rounded-md text-white flex-shrink">
+        <p class="text-green">Config Saved!</p>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div *ngIf="!done" class="ml-5">
+    <div>
+        <app-text-query
+            queryType="RowQuery"
+            toolTipName="Enter the name of the TableQuery here. The name will only be used to display it to you." 
+            toolTipNameObjName="Enter the object name of the TableQuery here. This will be the name under which it is saved in the database." 
+            (sendSelectedDom)="domSelected($event)" 
+            [dom]="dom" [deletable]="false" 
+            qName="TableQuery Name..." 
+            qObjName="TableQuery object name (for saving data)..." 
+            [query]="tableBodyQuery" 
+        (sendTextQuery)="setTableBodyQuery($event)"
+        ></app-text-query>
+    </div>
+    <div *ngIf="tableBodySelected">
+        <div *ngFor="let q of searchForQueries; let i = index" class="ml-6">
+            <app-text-query 
+                queryType="ColumnQuery"
+                toolTipName="Enter the name of the ColumnQuery here. The name will only be used to display it to you." 
+                toolTipNameObjName="Enter the object name of the ColumnQuery here. This will be the name under which it is saved in the database." 
+                [dom]="rowDom" [index]="i" (deleted)="deleteSearchFor($event)" 
+                qName="Name of the TableQuery..." 
+                qObjName="Object Name of the TableQuery (Used for saving data)..."  
+                [query]="q" 
+                (sendTextQuery)="setSearchForQuery($event)"
+            ></app-text-query>
+        </div>
+        <div class="ml-3">
+            <button title="Press this button once you have entered all the columns you wish to fetch." [disabled]="!tableQueryDone" type="button" (click)="send()" class="disabled:bg-gray-500 mb-2 mr-2 text-white bg-green-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Done</button>
+            <button title="Press this button to add another ColumnQuery." (click)="addSearchFor()" type="button" class="text-sm bg-white text-black px-4 py-2 border-grey-700 border-2 rounded-lg mr-4 hover:bg-gray-200 focus:ring-2 focus:outline-none focus:ring-gray-400">+ Add Column</button>
+            <button title="Press this button to delete this TableQuery." type="button" (click)="delete()" class="disabled:bg-gray-500 mb-2 mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="done" class="flex ml-3">
+    <div class="my-3 mx-4 px-4 py-2 bg-green-600 rounded-md text-white flex-shrink">
+        <p class="text-green">TableQuery "{{query.name}}" Saved!</p>
+    </div>
+</div>

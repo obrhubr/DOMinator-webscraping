@@ -1,0 +1,52 @@
+<div class="w-screen h-full flex flex-col items-center">
+    <div class="md:w-3/4 p-10 m-10 bg-white rounded-xl shadow-lg">
+        <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+            <div class="mb-6">
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scrape Job Name</label>
+                <input title="The name will only be used as a display name, choose anything that will be memorable for you." formControlName="name" name="name" minlength="1" type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ex: Football scores from Flashscore" required>
+                
+                <div *ngIf="m['name'].touched && m['name'].invalid" class="text-red-700">
+                    <div *ngIf="m['name'].errors?.['required']">Please provide name</div>
+                    <div *ngIf="m['name'].errors?.['minlength']">Name must be at least 1 character long.</div>
+                </div>
+            </div>
+            <div class="mb-6">
+                <label for="url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">URL</label>
+                <input title="This is the URL of the page you want to scrape. Enter the exact path of the page." formControlName="url" name="url" type="text" id="url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ex: https://flashscore/" required>
+                                
+                <div *ngIf="m['url'].touched && m['url'].invalid" class="text-red-700">
+                    <div *ngIf="m['url'].errors?.['required']">Please provide url</div>
+                    <div *ngIf="m['url'].errors?.['pattern']">Please provide valid url.</div>
+                </div>
+
+                <div class="mt-4">
+                    <button title="Once you have entered a URL, press this button to continue creating the config. It will fetch a preview of the page and allow you to interactively select elements." (click)="getPreview()" [disabled]="!m['url'].valid || (fetchedUrl == m['url'].value)" type="button" class="disabled:bg-gray-500 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get Preview</button>
+                </div>
+            </div>
+            <div class="mb-6">
+                <label for="cron" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cronjob Intervall</label>
+                <input title="A cronjob intervall is a special way to specify time which emerged on linux. Go to cronguru.com to get a simple explanation." formControlName="cron" name="cron" minlength="9" type="text" id="cron" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="* * * * *" required>
+                                              
+                <div *ngIf="m['cron'].touched && m['cron'].invalid" class="text-red-700">
+                    <div *ngIf="m['cron'].errors?.['required']">Please provide url</div>
+                    <div *ngIf="m['cron'].errors?.['pattern']">Please provide valid cronjob intervall.</div>
+                    <div *ngIf="m['cron'].errors?.['minlength']" class="text-red-700">A cronjob config must always be at least 9 character long. (* * * * *)</div>
+                    <div *ngIf="m['cron'].errors?.['maxlength']" class="text-red-700">A cronjob config can be maximally 14 characters long. (* * * * *)</div>  
+                </div>
+            </div>
+            <div *ngIf="image != ''" class="mb-6 flex justify-center p-4">
+                <img [src]="'data:image/png;base64,' + image" class="mb-6 flex justify-center bg-white rounded-lg shadow-md p-4"/>
+            </div>
+            <div *ngIf="fetchedUrl == m['url'].value && image != ''"  class="mb-6">
+                <app-query-gen [dom]="dom" (sendQueryConfig)="addQuery($event)"></app-query-gen>
+            </div>
+            <div class="flex flex-row justify-between mt-12">
+                <div class="">
+                    <button title="Once you have finished your query, this button will let you save it to the database." type="submit" [disabled]="!(configForm.valid && configDone && (fetchedUrl == m['url'].value))" class="disabled:bg-gray-500 mr-4 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Config</button>
+                </div>
+                
+                <a href="/" class="text-red-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

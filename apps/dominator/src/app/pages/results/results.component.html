@@ -1,0 +1,9 @@
+<div class="flex flex-col items-center m-10">
+    <div class="flex flex-col items-left w-1/2">
+        <p class="text-2xl bold underline my-4">The scraped Data will appear here: </p>
+        
+        <div *ngFor="let config of configs">
+            <app-scrape-list [id]="config._id" [config]="config"></app-scrape-list>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div *ngIf="!queryState.done" class="bg-white rounded-md py-4 my-2 flex flex-col ml-3">
+    <div *ngIf="!nameFilled" class="">
+        <form [formGroup]="textQueryFormGroup" (ngSubmit)="onSubmit()" class="flex flex-row">
+            <input title="{{toolTipName}}" formControlName="name" name="name" type="text" id="name" class="mb-2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="{{qName}}" required>
+            <input title="{{toolTipNameObjName}}" formControlName="obj_name" name="obj_name" type="text" id="obj_name" class="mb-2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="{{qObjName}}" required>
+            <button [disabled]="!textQueryFormGroup.valid" type="submit" class="disabled:bg-gray-500 mb-2 mr-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">></button>
+            <button *ngIf="deletable" type="button" (click)="delete()" class="disabled:bg-gray-500 mb-2 mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete</button>
+        </form>     
+    </div>
+
+    <div *ngIf="nameFilled" >
+        <div >
+            <div class="py-2 text-slate-700">
+                <span class="font-bold pr-2 text-black">Current State of the Query: </span><div [innerHTML]="getQueryStack()"></div>
+            </div>
+            <div *ngIf="!queryState.selected && !queryState.done" class="flex flex-row flex-wrap">
+                <button title="This Button allows you to go back and edit previous Queries." *ngIf="queries.length > 0" (click)="back()" type="button" class="border-white border-2 disabled:bg-gray-500 mr-4 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-1.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"><</button>
+                <button title="This Button adds a BaseQuery." (click)="selectQuery('BaseQuery')" type="button" class="text-sm bg-white text-black px-4 py-2 border-grey-700 border-2 rounded-lg mr-4 hover:bg-gray-200 focus:ring-2 focus:outline-none focus:ring-gray-400">+ Add BaseQuery</button>
+                <button title="This Button adds a BaseQueryAll." (click)="selectQuery('BaseQueryAll')" type="button" class="text-sm bg-white text-black px-4 py-2 border-grey-700 border-2 rounded-lg mr-4 hover:bg-gray-200 focus:ring-2 focus:outline-none focus:ring-gray-400">+ Add BaseQueryAll</button>
+                <button title="This Button adds a ChildQuery." *ngIf="queries.length > 0" (click)="selectQuery('ChildQuery')" type="button" class="text-sm bg-white text-black px-4 py-2 border-grey-700 border-2 rounded-lg mr-4 hover:bg-gray-200 focus:ring-2 focus:outline-none focus:ring-gray-400">+ Add ChildQuery</button>
+            </div>
+            <div *ngIf="queryState.selected && !queryState.done">
+                <form [formGroup]="queryFormGroup" (ngSubmit)="querySubmit()" class="flex flex-row">
+                    <div class="mr-4 mb-2 px-4 py-2">{{queryState.type}}: </div>
+                    <button (click)="back()" type="button" class="disabled:bg-gray-500 mb-2 mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"><</button>
+                    
+                    <input title="Enter your query here." *ngIf="queryState.type != 'ChildQuery'" formControlName="query" name="query" type="text" id="query" class="mb-2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="Query (either .class-name or #elementID)..." required>
+                    <input title="Enter the number of the element you want here." *ngIf="queryState.type == 'ChildQuery' || queryState.type == 'BaseQueryAll'" formControlName="num" name="num" type="number" id="num" class="mb-2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" placeholder="Index of child element to select..." required>
+                    <button title="Press this button to add another BaseQuery, BaseQueryAll or ChildQuery." [disabled]="!queryFormGroup.valid" type="submit" class="disabled:bg-gray-500 mb-2 mr-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">></button>
+                    <button title="Press this button to submit this Query." [disabled]="!queryFormGroup.valid" type="button" (click)="done()" class="disabled:bg-gray-500 mb-2 mr-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Done</button>
+                    <button title="Press this button to delete this Query." *ngIf="deletable" type="button" (click)="delete()" class="disabled:bg-gray-500 mb-2 mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete</button>
+                </form>
+                <div class="mr-4 mb-2 px-4 py-2">
+                    Element: 
+                    <div class="mx-4 my-2 text-blue-500">
+                        "{{getElement()}}"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="queryState.done" class="flex ml-3">
+    <div class="my-3 mx-4 px-4 py-2 border-green-600 border-2 rounded-md text-white flex-shrink">
+        <span class="text-slate-800 pr-2">TextQuery "{{query.name}}" Saved: </span> <span class="text-blue-500">"{{lastResult}}"</span>
+    </div>
+</div>
